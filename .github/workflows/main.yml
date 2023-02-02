@@ -35,7 +35,8 @@ jobs:
       run: |
         npm run build
         npm test
-
+      working-directory: GithubCiCd
+      
     - name: Run SonarQube analysis
       run: sonar-scanner
 
