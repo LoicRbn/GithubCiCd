@@ -19,6 +19,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.NODE_VERSION }}
+        path: GithubCiCd
 
     - name: Set up SonarScanner
       run: |
@@ -28,7 +29,7 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
-      working-directory: app
+      working-directory: GithubCiCd
 
     - name: Build and test the application
       run: |
