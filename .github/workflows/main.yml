@@ -26,11 +26,9 @@ jobs:
         unzip sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
         export PATH=$PWD/sonar-scanner-$SONAR_SCANNER_VERSION-linux/bin:$PATH
 
-    - name: Change directory to base directory
-      run : cd /GithubCiCd
-
     - name: Install dependencies
       run: npm ci
+      working-directory: app
 
     - name: Build and test the application
       run: |
