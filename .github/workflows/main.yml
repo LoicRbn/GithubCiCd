@@ -19,7 +19,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.NODE_VERSION }}
-        path: GithubCiCd
 
     - name: Set up SonarScanner
       run: |
@@ -37,8 +36,15 @@ jobs:
         npm test
       working-directory: GithubCiCd
 
-    - name: Run SonarQube analysis
-      run: sonar-scanner
+
+    - name: Run SonarQube Analysis
+      uses: SonarSource/sonarcloud-github-action@2.3.1
+      with:
+        args: -Dsonar.projectKey=LoicRbn_GithubCiCd -Dsonar.organization=loicrbn
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #- name: Run SonarQube analysis
+    # run: sonar-scanner
 
     - name: Build Docker image
       uses: docker/build-push-action@v2
