@@ -27,9 +27,8 @@ jobs:
         export PATH=$PWD/sonar-scanner-$SONAR_SCANNER_VERSION-linux/bin:$PATH
 
     - name: Install dependencies
-      run: |
-           cd /GithubCiCd
-           npm ci
+      run: cd /GithubCiCd
+      run: npm ci
 
     - name: Build and test the application
       run: |
