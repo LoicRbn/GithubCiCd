@@ -5,6 +5,7 @@ on: [push]
 env:
   SONAR_SCANNER_VERSION: 4.4.0.2170
   IMAGE_NAME: my-image-name
+  NODE_VERSION: 14
 
 jobs:
   build:
@@ -14,10 +15,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v1
+    - name: Use Node.js version
+      uses: actions/setup-node@v1
       with:
-        java-version: 14
+        node-version: ${{ env.NODE_VERSION }}
 
     - name: Set up SonarScanner
       run: |
@@ -25,10 +26,14 @@ jobs:
         unzip sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
         export PATH=$PWD/sonar-scanner-$SONAR_SCANNER_VERSION-linux/bin:$PATH
 
-    - name: Build and test with Maven
-      run: |
-        mvn clean install
+    - name: Install dependencies
+      run: npm ci
 
+    - name: Build and test the application
+      run: |
+        npm run build
+        npm test
+        
     - name: Run SonarQube analysis
       run: sonar-scanner
 
