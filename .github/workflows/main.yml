@@ -38,7 +38,7 @@ jobs:
 
 
     - name: Run SonarQube Analysis
-      uses: SonarSource/sonarcloud-github-action@2.3.1
+      uses: SonarSource/sonarcloud-github-action@master
       with:
         args: -Dsonar.projectKey=LoicRbn_GithubCiCd -Dsonar.organization=loicrbn
       env:
