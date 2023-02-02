@@ -1,0 +1,40 @@
+name: CI/CD
+
+on: [push]
+
+env:
+  SONAR_SCANNER_VERSION: 4.4.0.2170
+  IMAGE_NAME: my-image-name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 14
+
+    - name: Set up SonarScanner
+      run: |
+        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+        unzip sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+        export PATH=$PWD/sonar-scanner-$SONAR_SCANNER_VERSION-linux/bin:$PATH
+
+    - name: Build and test with Maven
+      run: |
+        mvn clean install
+
+    - name: Run SonarQube analysis
+      run: sonar-scanner
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ${IMAGE_NAME}:${{ env.GITHUB_SHA }}
